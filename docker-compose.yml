@@ -1,0 +1,6 @@
+version: 3
+
+services:
+  app:
+    image: superseriousbusiness/gotosocial:latest
+    container_name: gotosocial-app
