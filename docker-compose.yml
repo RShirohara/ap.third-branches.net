@@ -4,3 +4,14 @@ services:
   app:
     image: superseriousbusiness/gotosocial:latest
     container_name: gotosocial-app
+    user: 1000:1000
+    restart: always
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: microblog-tunnel
+    depends_on:
+      - app
+    restart: always
+    command: "tunnel --loglevel debug run"
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
