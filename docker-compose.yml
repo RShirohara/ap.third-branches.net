@@ -24,7 +24,7 @@ services:
     restart: always
   tunnel:
     image: cloudflare/cloudflared:latest
-    container_name: microblog-tunnel
+    container_name: gotosocial-tunnel
     depends_on:
       - app
     restart: always
