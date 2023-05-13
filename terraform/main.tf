@@ -45,6 +45,8 @@ resource "aws_lightsail_database" "gotosocial_db" {
   master_password          = random_password.lightsail_db_password.result
   blueprint_id             = "postgres_15"
   bundle_id                = "micro_2_0"
+  preferred_backup_window  = "18:00-19:00"
+  backup_retention_enabled = true
   final_snapshot_name      = "gotosocial-db-delete-${random_string.lightsail_db_snapshot.id}"
   tags = {
     service = "gotosocial"
