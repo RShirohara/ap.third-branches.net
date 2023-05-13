@@ -7,6 +7,10 @@ output "gts_host" {
   value = "${cloudflare_record.gotosocial_tunnel.name}.${data.cloudflare_zone.target_zone.name}"
 }
 
+output "gts_db_address" {
+  value = aws_lightsail_database.gotosocial_db.master_endpoint_address
+}
+
 output "gts_db_password" {
   value     = aws_lightsail_database.gotosocial_db.master_password
   sensitive = true
