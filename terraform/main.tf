@@ -113,7 +113,8 @@ data "aws_availability_zones" "availability_zone" {
 }
 
 resource "random_password" "lightsail_db_password" {
-  length = 64
+  length  = 64
+  special = false
 }
 
 resource "random_string" "lightsail_db_snapshot" {
