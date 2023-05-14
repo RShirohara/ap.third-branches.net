@@ -7,6 +7,8 @@ updates:
       day: "saturday"
       time: "09:00"
       timezone: "Asia/Tokyo"
+    labels:
+      - "Type: Dependencies"
     assignees:
       - "RShirohara"
     reviewers:
