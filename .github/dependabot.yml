@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "terraform"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    labels:
+      - "Type: Dependencies"
+    assignees:
+      - "RShirohara"
+    reviewers:
+      - "RShirohara"
