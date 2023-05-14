@@ -1,0 +1,13 @@
+versions: 2
+updates:
+  - package-ecosystem: "terraform"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    assignees:
+      - "RShirohara"
+    reviewers:
+      - "RShirohara"
