@@ -36,7 +36,7 @@ GoToSocial deployment scripts that are as automated as possible.
 
    Output value details: [`output.tf`](./terraform/output.tf)
 
-### 2. Setup Instance
+### 2. Setup GoToSocial Instance
 
 1. Login to created Lightsail instance.
 2. Install docker and docker-compose.
