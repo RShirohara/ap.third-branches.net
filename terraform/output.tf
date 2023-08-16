@@ -17,7 +17,7 @@ output "gts_db_password" {
 }
 
 output "gts_storage_s3_endpoint" {
-  value = aws_s3_bucket.gotosocial_bucket.bucket_regional_domain_name
+  value = replace(aws_s3_bucket.gotosocial_bucket.bucket_regional_domain_name, "${aws_s3_bucket.gotosocial_bucket.bucket}.", "")
 }
 
 output "gts_storage_s3_access_key" {
