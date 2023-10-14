@@ -1,8 +1,8 @@
-# `gotosocial-deploy`
+# `ap.third-branches.net`
 
 ## About
 
-GoToSocial deployment scripts that are as automated as possible.
+Deployment config and script for "[ap.third-branches.net](https://ap.third-branches.net)".
 
 ## Infrastructure
 
@@ -17,7 +17,7 @@ GoToSocial deployment scripts that are as automated as possible.
 - Reverse Proxy
   - Cloudflare Tunnel
 
-## Instructions
+## Setup
 
 ### 1. Setup Infrastructures
 
