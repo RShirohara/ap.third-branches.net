@@ -1,4 +1,4 @@
-output "cloudflare_tunnel_token" {
+output "tunnel_token" {
   value     = module.cloudflare_tunnel.token
   sensitive = true
 }
