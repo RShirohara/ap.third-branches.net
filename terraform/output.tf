@@ -17,14 +17,14 @@ output "gts_db_password" {
 }
 
 output "gts_storage_s3_endpoint" {
-  value = module.aws_s3.endpoint
+  value = module.cloudflare_r2.endpoint
 }
 
 output "gts_storage_s3_access_key" {
-  value = module.aws_s3.access_key
+  value = module.cloudflare_r2.access_key
 }
 
 output "gts_storage_s3_secret_key" {
-  value     = module.aws_s3.secret_key
+  value     = module.cloudflare_r2.secret_key
   sensitive = true
 }

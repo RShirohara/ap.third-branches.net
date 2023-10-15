@@ -1,5 +1,4 @@
-# AWS Resouces
-## Lightsail Instance
+# App instance
 module "aws_lightsail_instance" {
   source = "./modules/aws-lightsail-instance"
 }
@@ -9,7 +8,7 @@ moved {
   to   = module.aws_lightsail_instance.aws_lightsail_instance.gotosocial_app
 }
 
-## Lightsail DB
+# DB Instance
 module "aws_lightsail_database" {
   source = "./modules/aws-lightsail-db"
 }
@@ -29,43 +28,15 @@ moved {
   to   = module.aws_lightsail_database.random_string.db_snapshot
 }
 
-## S3 Bucket
-module "aws_s3" {
-  source = "./modules/aws-s3"
+# Media bucket
+module "cloudflare_r2" {
+  source = "./modules/cloudflare-r2"
+
+  api_token  = var.cloudflare_api_token
+  account_id = var.cloudflare_account_id
 }
 
-moved {
-  from = aws_s3_bucket.gotosocial_bucket
-  to   = module.aws_s3.aws_s3_bucket.gotosocial_bucket
-}
-
-moved {
-  from = aws_s3_bucket_versioning.gotosocial_bucket
-  to   = module.aws_s3.aws_s3_bucket_versioning.gotosocial_bucket
-}
-
-moved {
-  from = aws_iam_user.gotosocial_bucket
-  to   = module.aws_s3.aws_iam_user.gotosocial_bucket_manager
-}
-
-moved {
-  from = aws_iam_access_key.gotosocial_bucket
-  to   = module.aws_s3.aws_iam_access_key.gotosocial_bucket_manager
-}
-
-moved {
-  from = aws_iam_policy.gotosocial_bucket
-  to   = module.aws_s3.aws_iam_policy.gotosocial_bucket_management
-}
-
-moved {
-  from = aws_iam_policy_attachment.gotosocial_bucket
-  to   = module.aws_s3.aws_iam_policy_attachment.gotosocial_bucket_manage
-}
-
-# Cloudflare Resources
-## Tunnel
+# Reverse proxy
 module "cloudflare_tunnel" {
   source = "./modules/cloudflare-tunnel"
 
@@ -89,7 +60,7 @@ moved {
   to   = module.cloudflare_tunnel.random_id.tunnel_secret
 }
 
-## DNS Record
+# DNS Record
 module "cloudflare_zone" {
   source = "./modules/cloudflare-zone"
 
