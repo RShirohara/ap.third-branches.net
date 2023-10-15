@@ -40,8 +40,8 @@ Deployment config and script for "[ap.third-branches.net](https://ap.third-branc
 2. Install docker and docker-compose.
    - Reference: [Official Document](https://docs.docker.com/engine/install/centos/)
 3. Clone repository on Lightsail instance.
-4. Save the values output during infrastructure setup to the `.env` file.
-   - `CLOUDFLARE_TUNNEL_TOKEN`: Token used to set up Cloudflare Tunnel.
+4. Save the values output during infrastructure setup to the `.env` file under `environments/`.
+   - `TUNNEL_TOKEN`: Token used to set up Cloudflare Tunnel.
    - `GTS_*`: Environment variables that configure the GoToSocial instance.
      - Details: [GoToSocial Configuration Overview](https://docs.gotosocial.org/en/latest/configuration/)
 5. Start docker containers.

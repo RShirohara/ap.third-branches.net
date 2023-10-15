@@ -5,29 +5,14 @@ services:
     image: superseriousbusiness/gotosocial:latest
     container_name: gotosocial-app
     user: 1000:1000
-    environment:
-      - GTS_HOST=${GTS_HOST}
-      - GTS_PORT=${GTS_PORT}
-      - GTS_DB_TYPE=${GTS_DB_TYPE}
-      - GTS_DB_ADDRESS=${GTS_DB_ADDRESS}
-      - GTS_DB_USER=${GTS_DB_USER}
-      - GTS_DB_PASSWORD=${GTS_DB_PASSWORD}
-      - GTS_DB_DATABASE=${GTS_DB_DATABASE}
-      - GTS_DB_TLS_MODE=${GTS_DB_TLS_MODE}
-      - GTS_ACCOUNTS_REGISTRATION_OPEN=${GTS_ACCOUNTS_REGISTRATION_OPEN}
-      - GTS_STORAGE_BACKEND=${GTS_STORAGE_BACKEND}
-      - GTS_STORAGE_S3_ENDPOINT=${GTS_STORAGE_S3_ENDPOINT}
-      - GTS_STORAGE_S3_ACCESS_KEY=${GTS_STORAGE_S3_ACCESS_KEY}
-      - GTS_STORAGE_S3_SECRET_KEY=${GTS_STORAGE_S3_SECRET_KEY}
-      - GTS_STORAGE_S3_BUCKET=${GTS_STORAGE_S3_BUCKET}
-      - GTS_LETSENCRYPT_ENABLED=${GTS_LETSENCRYPT_ENABLED}
     restart: always
+    env_file:
+      - ./environment/app.env
   tunnel:
     image: cloudflare/cloudflared:latest
     container_name: gotosocial-tunnel
     depends_on:
       - app
     restart: always
-    command: "tunnel --loglevel debug run"
-    environment:
-      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    env_file:
+      - ./environment/tunnel.env
