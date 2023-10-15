@@ -12,10 +12,8 @@ Deployment config and script for "[ap.third-branches.net](https://ap.third-branc
 - DB: AWS Lightsail Database
   - Blueprint: PostgreSQL 15
   - Bundle: `micro`
-- Image and Video Hosting
-  - AWS S3 Bucket
-- Reverse Proxy
-  - Cloudflare Tunnel
+- Media Hosting: Cloudflare R2
+- Reverse Proxy: Cloudflare Tunnel
 
 ## Setup
 
