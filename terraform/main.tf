@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "4.65"
+      version = "~> 5.21.0"
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
@@ -21,19 +21,13 @@ provider "cloudflare" {
 
 # AWS Resouces
 ## Lightsail Instance
-resource "aws_lightsail_instance" "gotosocial_app" {
-  name              = "gotosocial-app"
-  availability_zone = data.aws_availability_zones.availability_zone.names[0]
-  blueprint_id      = "centos_stream_9"
-  bundle_id         = "micro_2_0"
-  add_on {
-    type          = "AutoSnapshot"
-    snapshot_time = "18:00"
-    status        = "Enabled"
-  }
-  tags = {
-    service = "gotosocial"
-  }
+module "aws_lightsail_instance" {
+  source = "./modules/aws-lightsail-instance"
+}
+
+moved {
+  from = aws_lightsail_instance.gotosocial_app
+  to   = module.aws_lightsail_instance.aws_lightsail_instance.gotosocial_app
 }
 
 ## Lightsail DB
