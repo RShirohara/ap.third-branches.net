@@ -16,3 +16,4 @@ services:
     restart: always
     env_file:
       - ./environments/tunnel.env
+    command: tunnel run
