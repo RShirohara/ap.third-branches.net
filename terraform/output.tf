@@ -8,11 +8,11 @@ output "gts_host" {
 }
 
 output "gts_db_address" {
-  value = aws_lightsail_database.gotosocial_db.master_endpoint_address
+  value = module.aws_lightsail_database.db_address
 }
 
 output "gts_db_password" {
-  value     = aws_lightsail_database.gotosocial_db.master_password
+  value     = module.aws_lightsail_database.db_password
   sensitive = true
 }
 

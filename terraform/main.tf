@@ -31,20 +31,23 @@ moved {
 }
 
 ## Lightsail DB
-resource "aws_lightsail_database" "gotosocial_db" {
-  relational_database_name = "gotosocial-db"
-  availability_zone        = data.aws_availability_zones.availability_zone.names[0]
-  master_database_name     = "gotosocial"
-  master_username          = "gotosocial"
-  master_password          = random_password.lightsail_db_password.result
-  blueprint_id             = "postgres_15"
-  bundle_id                = "micro_2_0"
-  preferred_backup_window  = "18:00-19:00"
-  backup_retention_enabled = true
-  final_snapshot_name      = "gotosocial-db-delete-${random_string.lightsail_db_snapshot.id}"
-  tags = {
-    service = "gotosocial"
-  }
+module "aws_lightsail_database" {
+  source = "./modules/aws-lightsail-db"
+}
+
+moved {
+  from = aws_lightsail_database.gotosocial_db
+  to   = module.aws_lightsail_database.aws_lightsail_database.gotosocial_db
+}
+
+moved {
+  from = random_password.lightsail_db_password
+  to   = module.aws_lightsail_database.random_password.db_password
+}
+
+moved {
+  from = random_string.lightsail_db_snapshot
+  to   = module.aws_lightsail_database.random_string.db_snapshot
 }
 
 ## S3 Bucket
@@ -101,22 +104,6 @@ data "aws_iam_policy_document" "gotosocial_bucket" {
       "${aws_s3_bucket.gotosocial_bucket.arn}/*"
     ]
   }
-}
-
-## Data resource
-data "aws_availability_zones" "availability_zone" {
-  state = "available"
-}
-
-resource "random_password" "lightsail_db_password" {
-  length  = 64
-  special = false
-}
-
-resource "random_string" "lightsail_db_snapshot" {
-  length  = 8
-  special = false
-  upper   = false
 }
 
 # Cloudflare Resources
