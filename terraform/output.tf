@@ -4,7 +4,7 @@ output "cloudflare_tunnel_token" {
 }
 
 output "gts_host" {
-  value = "${cloudflare_record.gotosocial_tunnel.name}.${data.cloudflare_zone.target_zone.name}"
+  value = "${var.cloudflare_record_name}.${data.cloudflare_zone.target_zone.name}"
 }
 
 output "gts_db_address" {

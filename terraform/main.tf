@@ -6,7 +6,7 @@ terraform {
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "4.4.0"
+      version = "~> 4.16.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -108,12 +108,18 @@ resource "cloudflare_tunnel_config" "gotosocial_tunnel" {
 }
 
 ## DNS Record
-resource "cloudflare_record" "gotosocial_tunnel" {
-  name    = var.cloudflare_record_name
-  type    = "CNAME"
-  zone_id = var.cloudflare_zone_id
-  value   = "${cloudflare_tunnel.gotosocial_tunnel.id}.cfargotunnel.com"
-  proxied = true
+module "cloudflare_dns" {
+  source = "./modules/cloudflare-dns"
+
+  api_token    = var.cloudflare_api_token
+  record_name  = var.cloudflare_record_name
+  record_value = "${cloudflare_tunnel.gotosocial_tunnel.id}.cfargotunnel.com"
+  zone_id      = var.cloudflare_zone_id
+}
+
+moved {
+  from = cloudflare_record.gotosocial_tunnel
+  to   = module.cloudflare_dns.cloudflare_record.gotosocial_domain
 }
 
 ## Data resource
