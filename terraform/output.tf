@@ -4,7 +4,7 @@ output "cloudflare_tunnel_token" {
 }
 
 output "gts_host" {
-  value = module.cloudflare_dns.origin
+  value = module.cloudflare_zone.origin
 }
 
 output "gts_db_address" {

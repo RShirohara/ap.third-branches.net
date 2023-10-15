@@ -71,7 +71,7 @@ module "cloudflare_tunnel" {
 
   api_token  = var.cloudflare_api_token
   account_id = var.cloudflare_account_id
-  origin     = module.cloudflare_dns.origin
+  origin     = module.cloudflare_zone.origin
 }
 
 moved {
@@ -90,8 +90,8 @@ moved {
 }
 
 ## DNS Record
-module "cloudflare_dns" {
-  source = "./modules/cloudflare-dns"
+module "cloudflare_zone" {
+  source = "./modules/cloudflare-zone"
 
   api_token    = var.cloudflare_api_token
   record_name  = var.cloudflare_record_name
@@ -101,5 +101,5 @@ module "cloudflare_dns" {
 
 moved {
   from = cloudflare_record.gotosocial_tunnel
-  to   = module.cloudflare_dns.cloudflare_record.gotosocial_domain
+  to   = module.cloudflare_zone.cloudflare_record.gotosocial_domain
 }
