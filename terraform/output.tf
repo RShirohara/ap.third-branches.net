@@ -17,14 +17,14 @@ output "gts_db_password" {
 }
 
 output "gts_storage_s3_endpoint" {
-  value = replace(aws_s3_bucket.gotosocial_bucket.bucket_regional_domain_name, "${aws_s3_bucket.gotosocial_bucket.bucket}.", "")
+  value = module.aws_s3.endpoint
 }
 
 output "gts_storage_s3_access_key" {
-  value = aws_iam_access_key.gotosocial_bucket.id
+  value = module.aws_s3.access_key
 }
 
 output "gts_storage_s3_secret_key" {
-  value     = aws_iam_access_key.gotosocial_bucket.secret
+  value     = module.aws_s3.secret_key
   sensitive = true
 }

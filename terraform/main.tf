@@ -51,59 +51,38 @@ moved {
 }
 
 ## S3 Bucket
-resource "aws_s3_bucket" "gotosocial_bucket" {
-  bucket = "gotosocial-bucket"
-  tags = {
-    service = "gotosocial"
-  }
+module "aws_s3" {
+  source = "./modules/aws-s3"
 }
 
-resource "aws_s3_bucket_versioning" "gotosocial_bucket" {
-  bucket = aws_s3_bucket.gotosocial_bucket.id
-  versioning_configuration {
-    status = "Disabled"
-  }
+moved {
+  from = aws_s3_bucket.gotosocial_bucket
+  to   = module.aws_s3.aws_s3_bucket.gotosocial_bucket
 }
 
-resource "aws_iam_user" "gotosocial_bucket" {
-  name = "gotosocial-bucket-manager"
-  tags = {
-    service = "gotosocial"
-  }
+moved {
+  from = aws_s3_bucket_versioning.gotosocial_bucket
+  to   = module.aws_s3.aws_s3_bucket_versioning.gotosocial_bucket
 }
 
-resource "aws_iam_access_key" "gotosocial_bucket" {
-  user = aws_iam_user.gotosocial_bucket.name
+moved {
+  from = aws_iam_user.gotosocial_bucket
+  to   = module.aws_s3.aws_iam_user.gotosocial_bucket_manager
 }
 
-resource "aws_iam_policy" "gotosocial_bucket" {
-  name   = "gotosocial-bucket-management"
-  policy = data.aws_iam_policy_document.gotosocial_bucket.json
-  tags = {
-    service = "gotosocial"
-  }
+moved {
+  from = aws_iam_access_key.gotosocial_bucket
+  to   = module.aws_s3.aws_iam_access_key.gotosocial_bucket_manager
 }
 
-resource "aws_iam_policy_attachment" "gotosocial_bucket" {
-  name       = "gotosocial-bucket-manage"
-  users      = [aws_iam_user.gotosocial_bucket.name]
-  policy_arn = aws_iam_policy.gotosocial_bucket.arn
+moved {
+  from = aws_iam_policy.gotosocial_bucket
+  to   = module.aws_s3.aws_iam_policy.gotosocial_bucket_management
 }
 
-data "aws_iam_policy_document" "gotosocial_bucket" {
-  statement {
-    effect    = "Allow"
-    actions   = ["s3:ListAllMyBuckets"]
-    resources = ["awr:aws:s3:::*"]
-  }
-  statement {
-    effect  = "Allow"
-    actions = ["s3:*"]
-    resources = [
-      aws_s3_bucket.gotosocial_bucket.arn,
-      "${aws_s3_bucket.gotosocial_bucket.arn}/*"
-    ]
-  }
+moved {
+  from = aws_iam_policy_attachment.gotosocial_bucket
+  to   = module.aws_s3.aws_iam_policy_attachment.gotosocial_bucket_manage
 }
 
 # Cloudflare Resources
