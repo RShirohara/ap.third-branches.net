@@ -18,3 +18,7 @@ resource "cloudflare_record" "gotosocial_domain" {
   value   = var.record_value
   proxied = true
 }
+
+data "cloudflare_zone" "target_zone" {
+  zone_id = var.zone_id
+}

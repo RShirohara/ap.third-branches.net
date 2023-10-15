@@ -1,10 +1,10 @@
 output "cloudflare_tunnel_token" {
-  value     = cloudflare_tunnel.gotosocial_tunnel.tunnel_token
+  value     = module.cloudflare_tunnel.token
   sensitive = true
 }
 
 output "gts_host" {
-  value = "${var.cloudflare_record_name}.${data.cloudflare_zone.target_zone.name}"
+  value = module.cloudflare_dns.origin
 }
 
 output "gts_db_address" {

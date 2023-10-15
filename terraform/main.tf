@@ -1,24 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.21.0"
-    }
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "~> 4.16.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.5.1"
-    }
-  }
-}
-
-provider "cloudflare" {
-  api_token = var.cloudflare_api_token
-}
-
 # AWS Resouces
 ## Lightsail Instance
 module "aws_lightsail_instance" {
@@ -87,24 +66,27 @@ moved {
 
 # Cloudflare Resources
 ## Tunnel
-resource "cloudflare_tunnel" "gotosocial_tunnel" {
+module "cloudflare_tunnel" {
+  source = "./modules/cloudflare-tunnel"
+
+  api_token  = var.cloudflare_api_token
   account_id = var.cloudflare_account_id
-  name       = "gotosocial"
-  secret     = random_id.clooudflare_tunnel_secret.b64_std
+  origin     = module.cloudflare_dns.origin
 }
 
-resource "cloudflare_tunnel_config" "gotosocial_tunnel" {
-  account_id = var.cloudflare_account_id
-  tunnel_id  = cloudflare_tunnel.gotosocial_tunnel.id
-  config {
-    ingress_rule {
-      hostname = "${var.cloudflare_record_name}.${data.cloudflare_zone.target_zone.name}"
-      service  = "http://app:8080"
-    }
-    ingress_rule {
-      service = "http_status:404"
-    }
-  }
+moved {
+  from = cloudflare_tunnel.gotosocial_tunnel
+  to   = module.cloudflare_tunnel.cloudflare_tunnel.gotosocial_tunnel
+}
+
+moved {
+  from = cloudflare_tunnel_config.gotosocial_tunnel
+  to   = module.cloudflare_tunnel.cloudflare_tunnel_config.gotosocial_tunnel
+}
+
+moved {
+  from = random_id.clooudflare_tunnel_secret
+  to   = module.cloudflare_tunnel.random_id.tunnel_secret
 }
 
 ## DNS Record
@@ -113,20 +95,11 @@ module "cloudflare_dns" {
 
   api_token    = var.cloudflare_api_token
   record_name  = var.cloudflare_record_name
-  record_value = "${cloudflare_tunnel.gotosocial_tunnel.id}.cfargotunnel.com"
+  record_value = module.cloudflare_tunnel.cname
   zone_id      = var.cloudflare_zone_id
 }
 
 moved {
   from = cloudflare_record.gotosocial_tunnel
   to   = module.cloudflare_dns.cloudflare_record.gotosocial_domain
-}
-
-## Data resource
-data "cloudflare_zone" "target_zone" {
-  zone_id = var.cloudflare_zone_id
-}
-
-resource "random_id" "clooudflare_tunnel_secret" {
-  byte_length = 35
 }
