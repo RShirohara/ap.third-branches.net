@@ -28,7 +28,7 @@ resource "cloudflare_tunnel_config" "gotosocial_tunnel" {
   config {
     ingress_rule {
       hostname = var.origin
-      service  = "http://app:8080"
+      service  = "http://localhost:8080"
     }
 
     ingress_rule {
