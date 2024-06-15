@@ -6,9 +6,9 @@ Deployment config and script for "[ap.third-branches.net](https://ap.third-branc
 
 ## Infrastructure
 
-- App Hosting: AWS Lightsail Instance
-  - Blueprint: CentOS 9 Stream
-  - Bundle: `micro`
+- App Hosting: AWS Lightsail Container
+  - Power: `nano`
+  - Scale: `1`
 - DB: AWS Lightsail Database
   - Blueprint: PostgreSQL 15
   - Bundle: `micro`
@@ -22,52 +22,26 @@ Deployment config and script for "[ap.third-branches.net](https://ap.third-branc
 1. Clone repository.
 2. Create resources using Terraform.
 
-   ```bash
+   ```shell
+   cd terraform
    terraform plan
    terraform apply
    ```
 
    Required value details: [`variables.tf`](./terraform/variable.tf)
 
-3. Check the output values to use when setting up a GoToSocial instance.
+### 2. Create Admin Account (First time only)
 
-   Output value details: [`output.tf`](./terraform/output.tf)
-
-### 2. Setup GoToSocial Instance
-
-1. Login to created Lightsail instance.
-2. Install docker and docker-compose.
-   - Reference: [Official Document](https://docs.docker.com/engine/install/centos/)
-3. Clone repository on Lightsail instance.
-4. Save the values output during infrastructure setup to the `.env` file under `environments/`.
+1. Save the values output during infrastructure setup to the `.env` file under `docker/environments/`.
    - `TUNNEL_TOKEN`: Token used to set up Cloudflare Tunnel.
    - `GTS_*`: Environment variables that configure the GoToSocial instance.
      - Details: [GoToSocial Configuration Overview](https://docs.gotosocial.org/en/latest/configuration/)
-5. Start docker containers.
+2. Start docker containers.
 
-   ```bash
+   ```shell
+   cd docker
    docker compose up -d
    ```
 
-## Administration Tasks
-
-### 1. Update docker images
-
-1. Login to Lightsail instance.
-2. Stop docker containers.
-
-   ```bash
-   docker compose down
-   ```
-
-3. Pull docker images.
-
-   ```bash
-   docker compose pull
-   ```
-
-4. Restart docker containers.
-
-   ```bash
-   docker compose up -d
-   ```
+3. Create admin account.
+   - Details: [Official Document](https://docs.gotosocial.org/en/latest/getting_started/user_creation/)
