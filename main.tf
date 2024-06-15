@@ -1,3 +1,16 @@
+terraform {
+  required_providers {
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4.35.0"
+    }
+  }
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}
+
 # App instance
 module "aws_lightsail_instance" {
   source = "./modules/aws-lightsail-instance"
@@ -6,6 +19,19 @@ module "aws_lightsail_instance" {
 moved {
   from = aws_lightsail_instance.gotosocial_app
   to   = module.aws_lightsail_instance.aws_lightsail_instance.gotosocial_app
+}
+
+# App container
+module "aws_lightsail_container" {
+  source = "./modules/aws-lightsail-container"
+
+  app_host          = module.cloudflare_zone.origin
+  app_db_address    = module.aws_lightsail_database.db_address
+  app_db_password   = module.aws_lightsail_database.db_password
+  app_s3_endpoint   = module.cloudflare_r2.endpoint
+  app_s3_access_key = module.cloudflare_r2.access_key
+  app_s3_secret_key = module.cloudflare_r2.secret_key
+  tunnel_token      = module.cloudflare_tunnel.token
 }
 
 # DB Instance
