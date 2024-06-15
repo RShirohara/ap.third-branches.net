@@ -3,8 +3,7 @@ updates:
   - package-ecosystem: "terraform"
     directory: "/terraform"
     schedule:
-      interval: "weekly"
-      day: "saturday"
+      interval: "monthly"
       time: "03:00"
       timezone: "Asia/Tokyo"
     labels:
