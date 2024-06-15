@@ -23,7 +23,6 @@ Deployment config and script for "[ap.third-branches.net](https://ap.third-branc
 2. Create resources using Terraform.
 
    ```bash
-   cd terraform
    terraform plan
    terraform apply
    ```
