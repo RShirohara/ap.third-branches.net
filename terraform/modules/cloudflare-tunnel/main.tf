@@ -15,15 +15,15 @@ provider "cloudflare" {
   api_token = var.api_token
 }
 
-resource "cloudflare_tunnel" "gotosocial_tunnel" {
+resource "cloudflare_zero_trust_tunnel_cloudflared" "gotosocial_tunnel" {
   account_id = var.account_id
   name       = "gotosocial"
   secret     = random_id.tunnel_secret.b64_std
 }
 
-resource "cloudflare_tunnel_config" "gotosocial_tunnel" {
+resource "cloudflare_zero_trust_tunnel_cloudflared_config" "gotosocial_tunnel" {
   account_id = var.account_id
-  tunnel_id  = cloudflare_tunnel.gotosocial_tunnel.id
+  tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.gotosocial_tunnel.id
 
   config {
     ingress_rule {
