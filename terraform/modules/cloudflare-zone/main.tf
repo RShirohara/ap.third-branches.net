@@ -15,7 +15,7 @@ resource "cloudflare_record" "gotosocial_domain" {
   name    = var.record_name
   type    = "CNAME"
   zone_id = var.zone_id
-  value   = var.record_value
+  content = var.record_value
   proxied = true
 }
 
