@@ -20,10 +20,16 @@ Deployment config and script for "[ap.third-branches.net](https://ap.third-branc
 ### 1. Setup Infrastructures
 
 1. Clone repository.
-2. Create resources using Terraform.
+2. Create cloudflare R2 API Token used for manage terraform backend.
+   - Permissions: Object Read & Write
+3. Create resources using Terraform.
 
    ```shell
    cd terraform
+   terraform init \
+     -backend-config="access_key=${CLOUDFLARE_TERRAFORM_BACKEND_ACCESS_KEY}" \
+     -backend-config="secret_Key=${CLOUDFLARE_TERRAFORM_BACKEND_ACCESS_SECRET}" \
+     -backend-config="endpoints={s3=\"https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com\"}"
    terraform plan
    terraform apply
    ```
