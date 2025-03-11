@@ -11,11 +11,10 @@ terraform {
     skip_s3_checksum            = true
     use_path_style              = true
 
-    # Replace secrets before exec terraform.
-    access_key = "<CLOUDFLARE_TERRAFORM_BACKEND_ACCESS_KEY>"
-    secret_key = "<CLOUDFLARE_TERRAFORM_BACKEND_ACCESS_SECRET>"
+    access_key = var.cloudflare_terraform_backend_access_key
+    secret_key = var.cloudflare_terraform_backend_access_secret
     endpoints = {
-      s3 = "https://<CLOUDFLARE_ACCOUNT_ID>.r2.cloudflarestorage.com"
+      s3 = "https://${var.cloudflare_account_id}.r2.cloudflarestorage.com"
     }
   }
 }
