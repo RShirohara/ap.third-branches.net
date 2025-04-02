@@ -11,8 +11,9 @@ provider "cloudflare" {
   api_token = var.api_token
 }
 
-resource "cloudflare_record" "gotosocial_domain" {
+resource "cloudflare_dns_record" "gotosocial_domain" {
   name    = var.record_name
+  ttl     = 1
   type    = "CNAME"
   zone_id = var.zone_id
   content = var.record_value
