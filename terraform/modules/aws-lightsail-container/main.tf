@@ -48,7 +48,7 @@ resource "aws_lightsail_container_service_deployment_version" "gotosocial_contai
 
   container {
     container_name = "tunnel"
-    image          = "cloudflare/cloudflared:2025.4.0"
+    image          = "cloudflare/cloudflared:2025.4.2"
 
     command = ["tunnel", "run"]
 
