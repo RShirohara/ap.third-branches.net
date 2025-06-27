@@ -2,11 +2,11 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 4.47.0"
+      version = "~> 5.4.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "~> 3.6.0"
+      version = "~> 3.7.2"
     }
   }
 }
@@ -16,27 +16,33 @@ provider "cloudflare" {
 }
 
 resource "cloudflare_zero_trust_tunnel_cloudflared" "gotosocial_tunnel" {
-  account_id = var.account_id
-  name       = "gotosocial"
-  secret     = random_id.tunnel_secret.b64_std
+  account_id    = var.account_id
+  name          = "gotosocial"
+  tunnel_secret = random_id.tunnel_secret.b64_std
 }
 
 resource "cloudflare_zero_trust_tunnel_cloudflared_config" "gotosocial_tunnel" {
   account_id = var.account_id
   tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.gotosocial_tunnel.id
 
-  config {
-    ingress_rule {
-      hostname = var.origin
-      service  = "http://localhost:8080"
-    }
-
-    ingress_rule {
-      service = "http_status:404"
-    }
+  config = {
+    ingress = [
+      {
+        hostname = var.origin
+        service  = "http://localhost:8080"
+      },
+      {
+        service = "http_status:404"
+      }
+    ]
   }
 }
 
 resource "random_id" "tunnel_secret" {
   byte_length = 35
+}
+
+data "cloudflare_zero_trust_tunnel_cloudflared_token" "gotosocial_tunnel" {
+  account_id = var.account_id
+  tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.gotosocial_tunnel.id
 }
